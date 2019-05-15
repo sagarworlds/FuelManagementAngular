@@ -1,0 +1,29 @@
+<h2>Add new Fuel Detail</h2>
+<div class="container">
+  <div class="row">
+    <form>
+      <div class="form-group">
+        <label> Total Price</label>
+        <input type="number" class="form-control" name="TotalPrice" [(ngModel)]="fueldetail.TotalPrice" placeholder="Total Price"/>
+      </div>
+      <div class="form-group">
+        <label> Total Fuel</label>
+        <input type="number" class="form-control" name="AddedFuel" [(ngModel)]="fueldetail.AddedFuel" placeholder="Total Fuel"/>
+      </div>
+      <div class="form-group">
+        <label> Meter Reading</label>
+        <input type="number" class="form-control" name="MeterReading" [(ngModel)]="fueldetail.MeterReading" placeholder="Meter Reading" />
+      </div>
+      <div class="form-group">
+          <label> Note</label>
+          <textarea  class="form-control" name="Note" [(ngModel)]="fueldetail.Note" placeholder="Note" ></textarea>
+        </div>
+      <div class="form-group">
+
+        <input type="button" class="btn btn-primary" value="Add" (click)="save()" />
+      </div>
+    </form>
+
+  </div>
+
+</div>
