@@ -13,8 +13,12 @@ export class FuelService {
 
   constructor(private http: HttpClient) { }
   save(oFuelDetail: FuelDetail): Observable<any> {
-    debugger;
     const apiURL = `${this.APIBaseURL}/FuelDetail/Save`;
     return this.http.post(apiURL, oFuelDetail);
+  }
+
+  getList(): Observable<any> {
+    const apiURL = `${this.APIBaseURL}/FuelDetail/Get`;
+    return this.http.get(apiURL);
   }
 }

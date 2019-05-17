@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
+import { ListComponent } from './fuel/list/list.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'add',
     component: FuelAddComponent
+  },
+  {
+    path: 'list',
+    component: ListComponent
   },
 ];
 
