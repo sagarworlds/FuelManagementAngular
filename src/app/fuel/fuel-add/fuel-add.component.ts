@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FuelService } from '../_service/fuel.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FuelDetail } from '../_modal/fuel-detail-modal';
 
 @Component({
   selector: 'app-fuel-add',
@@ -7,20 +9,32 @@ import { FuelService } from '../_service/fuel.service';
   styleUrls: ['./fuel-add.component.css']
 })
 export class FuelAddComponent implements OnInit {
-   fueldetail: FuelDetail = { AddedFuel: '', MeterReading: 0, TotalPrice: 0, UserId: 1, Note: '' };
+
+  fuelAddForm = new FormGroup({
+    AddedFuel: new FormControl('', Validators.required),
+    MeterReading: new FormControl('', Validators.required),
+    TotalPrice: new FormControl('', Validators.required),
+    UserId: new FormControl(1),
+    Note: new FormControl()
+  });
+  newFuelDetail: FuelDetail;
+
   constructor(private _service: FuelService) { }
 
+
   ngOnInit() {
-    
+
   }
 
-  save() {
-    debugger;
-    this._service.save(this.fueldetail).subscribe(res => {
-      debugger;
-      this.fueldetail = res;
-      console.log(this.fueldetail);
-    });
+  onSubmit() {
+    if (this.fuelAddForm.valid) {
+      this.newFuelDetail = new FuelDetail(this.fuelAddForm.value);
+      console.log(this.newFuelDetail);
+      this._service.save(this.newFuelDetail).subscribe(res => {
+        debugger;
+        console.log(res);
+        this.fuelAddForm.reset();
+      });
+    }
   }
-
 }
