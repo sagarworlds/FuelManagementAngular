@@ -3,11 +3,11 @@ import { FuelService } from '../_service/fuel.service';
 import { FuelDetail } from '../_modal/fuel-detail-modal';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  selector: 'app-fuel-list',
+  templateUrl: './fuel-list.component.html',
+  styleUrls: ['./fuel-list.component.css']
 })
-export class ListComponent implements OnInit {
+export class FuelListComponent implements OnInit {
   fuelList: FuelDetail[];
   constructor(private _service: FuelService) { }
 
