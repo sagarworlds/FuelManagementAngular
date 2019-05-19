@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IFuelDetail } from '../_modal/fuel-detail-modal';
+import { FuelDetail } from '../_modal/fuel-detail-modal';
 import { FuelService } from '../_service/fuel.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { FuelService } from '../_service/fuel.service';
 })
 export class FuelHomeComponent implements OnInit {
 
-  fuelList: IFuelDetail[];
+  fuelList: FuelDetail[];
   selectedMonthResult = { month: 0, travelledDistance: 0, year: 0, totalFuel: 0, previousAvg: 0, totalPrice: 0.0, PricePerLitre: 0 }
   selectedInput = { month: 4, year: 2019 }
   constructor(private fuelService: FuelService) { }
@@ -29,7 +29,7 @@ export class FuelHomeComponent implements OnInit {
         new Date(x.CreatedAt).getMonth() == this.selectedInput.month
         && new Date(x.CreatedAt).getFullYear() == this.selectedInput.year
       );
-      results.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      results.sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime())
       console.log(results);
       for (let i = 0, length = results.length; i < length; i++) {
         const fuel = results[i];

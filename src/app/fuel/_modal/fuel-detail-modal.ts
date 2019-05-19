@@ -1,4 +1,4 @@
-interface IFuelDetail {
+/*interface IFuelDetail {
   Id: number;
   UserId: number;
   MeterReading: number;
@@ -7,16 +7,20 @@ interface IFuelDetail {
   Note: string;
   CreatedAt: Date;
   ModifiedAt: Date;
-}
+}*/
 export class FuelDetail {
-  // constructor(public Id, public UserId, public MeterReading: number,
-  //   public TotalPrice: number,
-  //   public AddedFuel: number,
-  //   public Note: string,
-  //   public CreatedAt: Date,
-  //   public ModifiedAt: Date) { }
-
-  public constructor(init?: Partial<IFuelDetail>) {
+  public constructor(init?: FuelDetail) {
     Object.assign(this, init);
   }
+  public Id: number;
+  public UserId: number;
+  public MeterReading: number;
+  public TotalPrice: number;
+  public AddedFuel: number;
+  public Note: string;
+  public CreatedAt: Date;
+  public ModifiedAt: Date;
+  // public constructor(init?: Partial<IFuelDetail>) {
+  //   Object.assign(this, init);
+  // }
 }

@@ -7,6 +7,16 @@ import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
 
 const routes: Routes = [
   {
+    path: '',
+    component: FuelHomeComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'fms',
+    component: FuelHomeComponent,
+    pathMatch: 'full'
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
