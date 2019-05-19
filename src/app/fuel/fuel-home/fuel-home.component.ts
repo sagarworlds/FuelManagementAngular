@@ -11,7 +11,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class FuelHomeComponent implements OnInit {
 
   fuelList: FuelDetail[];
-  selectedMonthResult = { month: 0, travelledDistance: 0, year: 0, totalFuel: 0, previousAvg: 0, totalPrice: 0.0, PricePerLitre: 0 }
+  selectedMonthResult = { month: 0, travelledDistance: 0, year: 0, totalFuel: 0, previousAvg: '', totalPrice: 0.0, PricePerLitre: 0 }
   selectedInput = { month: { name: 'May', value: 4 }, year: { name: new Date().getUTCFullYear(), value: new Date().getUTCFullYear() } }
   months = [
     { name: 'Jan', value: 0 },
@@ -53,21 +53,25 @@ export class FuelHomeComponent implements OnInit {
 
   setFilterData() {
     if (this.fuelList.length) {
+      this.fuelList.sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime())
+
 
       let results = this.fuelList.filter(x =>
         new Date(x.CreatedAt).getMonth() == this.selectedInput.month.value
         && new Date(x.CreatedAt).getFullYear() == this.selectedInput.year.value
       );
-      results.sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime())
-      for (let i = 0, length = results.length; i < length; i++) {
-        const fuel = results[i];
-        this.selectedMonthResult.totalPrice += fuel.TotalPrice;
-        this.selectedMonthResult.totalFuel += fuel.AddedFuel;
+
+      this.selectedMonthResult.totalPrice = 0;
+      this.selectedMonthResult.totalFuel = 0;
+      if (results.length) {
+        for (let i = 0, length = results.length; i < length; i++) {
+          const fuel = results[i];
+          this.selectedMonthResult.totalPrice += fuel.TotalPrice;
+          this.selectedMonthResult.totalFuel += fuel.AddedFuel;
+        }
+        this.selectedMonthResult.travelledDistance = results[0].MeterReading - results[results.length - 1].MeterReading;
+        this.selectedMonthResult.previousAvg = (this.selectedMonthResult.travelledDistance / results[results.length - 1].AddedFuel).toFixed(2);
       }
-      this.selectedMonthResult.travelledDistance = results[results.length - 1].MeterReading - results[0].MeterReading;
-      this.selectedMonthResult.previousAvg = this.selectedMonthResult.travelledDistance / this.selectedMonthResult.totalFuel;
-      console.log(this.selectedMonthResult.travelledDistance)
-      console.log(this.selectedMonthResult.totalFuel);
     }
 
   }
@@ -81,13 +85,14 @@ export class FuelHomeComponent implements OnInit {
 
   monthChange(newValue: string) {
     console.log(newValue)
-
-    this.selectedMonthResult.month = parseInt(newValue);
+    this.selectedInput.month.value = parseInt(newValue);
+    //this.selectedMonthResult.month = parseInt(newValue);
     this.setFilterData();
   }
   yearChange(newValue: string) {
     console.log(newValue)
-    this.selectedMonthResult.year = parseInt(newValue);
+    this.selectedInput.year.value = parseInt(newValue);
+
     this.setFilterData();
   }
 
