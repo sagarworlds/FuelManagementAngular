@@ -1,34 +1,31 @@
-<div class="container">
-  <div class="row">
-    <form class="col-md-6" novalidate [formGroup]="fuelAddForm" (ngSubmit)="onSubmit()">
-      <h2>Add Fuel Detail</h2>
-      <div class="form-group">
-        <div class="alert alert-danger"
-          [hidden]="fuelAddForm.controls.TotalPrice.valid || fuelAddForm.controls.TotalPrice.pristine">
-          Total Price is required
-        </div>
-        <input type="number" class="form-control" name="TotalPrice" formControlName="TotalPrice"
-          placeholder="Total Price" required />
-      </div>
+<div class="row">
+  <form class="col-md-6" novalidate [formGroup]="fuelAddForm" (ngSubmit)="onSubmit()">
+    <h2>Add Fuel Detail</h2>
+    <div class="form-group">
       <div class="alert alert-danger"
-        [hidden]="fuelAddForm.controls.AddedFuel.valid || fuelAddForm.controls.AddedFuel.pristine">
-        Total Fuel is required
+        [hidden]="fuelAddForm.controls.TotalPrice.valid || fuelAddForm.controls.TotalPrice.pristine">
+        Total Price is required
       </div>
-      <div class="form-group">
-        <input type="number" class="form-control" name="AddedFuel" formControlName="AddedFuel" placeholder="Total Fuel"
-          required />
-      </div>
-      <div class="form-group">
-        <input type="number" class="form-control" name="meterReading" formControlName="MeterReading"
-          placeholder="Meter Reading" required />
-      </div>
-      <div class="form-group">
-        <textarea class="form-control" name="Note" formControlName="Note" placeholder="Note"></textarea>
-      </div>
-      <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Add" />
-      </div>
-    </form>
-  </div>
-
+      <input type="number" class="form-control" name="TotalPrice" formControlName="TotalPrice" placeholder="Total Price"
+        required />
+    </div>
+    <div class="alert alert-danger"
+      [hidden]="fuelAddForm.controls.AddedFuel.valid || fuelAddForm.controls.AddedFuel.pristine">
+      Total Fuel is required
+    </div>
+    <div class="form-group">
+      <input type="number" class="form-control" name="AddedFuel" formControlName="AddedFuel" placeholder="Total Fuel"
+        required />
+    </div>
+    <div class="form-group">
+      <input type="number" class="form-control" name="meterReading" formControlName="MeterReading"
+        placeholder="Meter Reading" required />
+    </div>
+    <div class="form-group">
+      <textarea class="form-control" name="Note" formControlName="Note" placeholder="Note"></textarea>
+    </div>
+    <div class="form-group">
+      <input type="submit" class="btn btn-primary" value="Add" />
+    </div>
+  </form>
 </div>

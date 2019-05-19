@@ -1,8 +1,24 @@
-
   <div class="row">
-    <div class="col-md-12">
-      <h1>{{selectedMonthResult.month}} {{this.selectedMonthResult.year}}</h1>
+    <!-- <div class="col-md-6">
+    <h1>{{selectedMonthResult.month}} {{this.selectedMonthResult.year}}</h1>
+  </div> -->
+    <div class="col-md-6">
+      <form [formGroup]="fuelHomeForm">
+        <div class="form-group row">
+          <div class="col-xs-2">
+            <select (change)="monthChange($event.target.value)" class="form-control" formControlName="Month">
+              <option *ngFor="let month of months" [value]="month.value">{{month.name}} </option>
+            </select>
+          </div>
+          <div class="col-xs-2">
 
+            <select (change)="yearChange($event.target.value)" class="form-control" formControlName="Year">
+              <option *ngFor="let year of years" [value]="year.value">{{year.name}} </option>
+            </select>
+          </div>
+        </div>
+
+      </form>
     </div>
   </div>
   <div class="row">
