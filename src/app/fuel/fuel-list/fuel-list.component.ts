@@ -7,9 +7,11 @@ import { FuelDetail } from '../_modal/fuel-detail-modal';
   templateUrl: './fuel-list.component.html',
   styleUrls: ['./fuel-list.component.css']
 })
+
 export class FuelListComponent implements OnInit {
   fuelList: FuelDetail[];
-  constructor(private _service: FuelService) { }
+
+  constructor(private fuelService: FuelService) { }
 
 
   ngOnInit() {
@@ -17,10 +19,10 @@ export class FuelListComponent implements OnInit {
   }
 
   getList() {
-    this._service.getList().subscribe(res => {
+    this.fuelService.getList().subscribe(res => {
       console.log(res);
       this.fuelList = res;
     });
   }
-
 }
+

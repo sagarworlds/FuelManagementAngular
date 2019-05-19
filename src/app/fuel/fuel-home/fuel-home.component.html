@@ -1,0 +1,29 @@
+
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{selectedMonthResult.month}} {{this.selectedMonthResult.year}}</h1>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3">
+          <h5>Expense</h5>
+          {{selectedMonthResult.totalPrice| currency: 'INR':true}}
+        </div>
+        <div class="col-md-3">
+          <h5>Total Fuel</h5>
+          {{selectedMonthResult.totalFuel}}ltr
+        </div>
+        <div class="col-md-3">
+          <h5>Prev Avg</h5>
+          {{selectedMonthResult.previousAvg}}
+        </div>
+        <div class="col-md-3">
+          <h5>Distance</h5>
+          {{selectedMonthResult.travelledDistance}}
+        </div>
+      </div>
+    </div>
+  </div>

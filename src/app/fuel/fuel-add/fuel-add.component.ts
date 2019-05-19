@@ -19,7 +19,7 @@ export class FuelAddComponent implements OnInit {
   });
   newFuelDetail: FuelDetail;
 
-  constructor(private _service: FuelService) { }
+  constructor(private fuelService: FuelService) { }
 
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class FuelAddComponent implements OnInit {
     if (this.fuelAddForm.valid) {
       this.newFuelDetail = new FuelDetail(this.fuelAddForm.value);
       console.log(this.newFuelDetail);
-      this._service.save(this.newFuelDetail).subscribe(res => {
+      this.fuelService.save(this.newFuelDetail).subscribe(res => {
         debugger;
         console.log(res);
         this.fuelAddForm.reset();

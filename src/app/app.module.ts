@@ -7,16 +7,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
-import { ListComponent } from './fuel/list/list.component';
 import { FuelListComponent } from './fuel/fuel-list/fuel-list.component';
+import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     FuelAddComponent,
-    ListComponent,
-    FuelListComponent
+    FuelListComponent,
+    FuelHomeComponent
   ],
   imports: [
     BrowserModule,

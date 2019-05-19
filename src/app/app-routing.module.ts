@@ -3,11 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
 import { FuelListComponent } from './fuel/fuel-list/fuel-list.component';
+import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
 
 const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'home',
+    component: FuelHomeComponent
   },
   {
     path: 'add',

@@ -12,6 +12,7 @@ export class FuelService {
   APIBaseURL = environment.APIBaseURL;
 
   constructor(private http: HttpClient) { }
+
   save(oFuelDetail: FuelDetail): Observable<any> {
     const apiURL = `${this.APIBaseURL}/FuelDetail/Save`;
     return this.http.post(apiURL, oFuelDetail);
@@ -21,4 +22,16 @@ export class FuelService {
     const apiURL = `${this.APIBaseURL}/FuelDetail/Get`;
     return this.http.get(apiURL);
   }
+
+  getByMonthYear(oFuelDetail: FuelDetail): Observable<any> {
+    const apiURL = `${this.APIBaseURL}/FuelDetail/getByMonthYear`;
+    return this.http.post(apiURL, oFuelDetail);
+  }
+  
+  GetByUserId(userId): Observable<any> {
+    const apiURL = `${this.APIBaseURL}/FuelDetail/GetByUserId?UserId=${userId}`;
+    return this.http.get(apiURL);
+  }
+
+ 
 }
