@@ -52,25 +52,30 @@ export class FuelHomeComponent implements OnInit {
   }
 
   setFilterData() {
+    this.selectedMonthResult.travelledDistance = 0;
+    this.selectedMonthResult.previousAvg = '';
+    this.selectedMonthResult.totalPrice = 0;
+    this.selectedMonthResult.totalFuel = 0;
     if (this.fuelList.length) {
       this.fuelList.sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime())
-
 
       let results = this.fuelList.filter(x =>
         new Date(x.CreatedAt).getMonth() == this.selectedInput.month.value
         && new Date(x.CreatedAt).getFullYear() == this.selectedInput.year.value
       );
 
-      this.selectedMonthResult.totalPrice = 0;
-      this.selectedMonthResult.totalFuel = 0;
       if (results.length) {
         for (let i = 0, length = results.length; i < length; i++) {
           const fuel = results[i];
           this.selectedMonthResult.totalPrice += fuel.TotalPrice;
           this.selectedMonthResult.totalFuel += fuel.AddedFuel;
         }
-        this.selectedMonthResult.travelledDistance = results[0].MeterReading - results[results.length - 1].MeterReading;
-        this.selectedMonthResult.previousAvg = (this.selectedMonthResult.travelledDistance / results[results.length - 1].AddedFuel).toFixed(2);
+        let index = this.fuelList.indexOf(results[0]);
+        let prevRecord = this.fuelList[index + 1];
+
+        this.selectedMonthResult.travelledDistance = results[0].MeterReading - prevRecord.MeterReading;
+        // tslint:disable-next-line: max-line-length
+        this.selectedMonthResult.previousAvg = (this.selectedMonthResult.travelledDistance / prevRecord.AddedFuel).toFixed(2);
       }
     }
 
