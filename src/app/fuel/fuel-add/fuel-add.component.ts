@@ -31,7 +31,6 @@ export class FuelAddComponent implements OnInit {
       this.newFuelDetail = new FuelDetail(this.fuelAddForm.value);
       console.log(this.newFuelDetail);
       this.fuelService.save(this.newFuelDetail).subscribe(res => {
-        debugger;
         console.log(res);
         this.fuelAddForm.reset();
       });
