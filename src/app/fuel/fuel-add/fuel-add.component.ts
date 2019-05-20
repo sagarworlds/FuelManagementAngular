@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FuelService } from '../_service/fuel.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FuelDetail } from '../_modal/fuel-detail-modal';
+import { FuelDetail } from '../_model/fuel-detail-model';
 
 @Component({
   selector: 'app-fuel-add',

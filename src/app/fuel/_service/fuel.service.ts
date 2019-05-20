@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
-import { FuelDetail } from '../_modal/fuel-detail-modal';
+import { FuelDetail } from '../_model/fuel-detail-model';
 
 
 @Injectable({
@@ -27,11 +27,11 @@ export class FuelService {
     const apiURL = `${this.APIBaseURL}/FuelDetail/getByMonthYear`;
     return this.http.post(apiURL, oFuelDetail);
   }
-  
+
   GetByUserId(userId): Observable<any> {
     const apiURL = `${this.APIBaseURL}/FuelDetail/GetByUserId?UserId=${userId}`;
     return this.http.get(apiURL);
   }
 
- 
+
 }

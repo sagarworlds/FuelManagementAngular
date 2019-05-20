@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FuelService } from '../_service/fuel.service';
-import { FuelDetail } from '../_modal/fuel-detail-modal';
+import { FuelDetail } from '../_model/fuel-detail-model';
 
 @Component({
   selector: 'app-fuel-list',

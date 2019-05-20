@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FuelDetail } from '../_modal/fuel-detail-modal';
+import { FuelDetail } from '../_model/fuel-detail-model';
 import { FuelService } from '../_service/fuel.service';
 import { FormGroup, FormControl } from '@angular/forms';
 
