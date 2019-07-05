@@ -11,8 +11,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class FuelHomeComponent implements OnInit {
 
   fuelList: FuelDetail[];
-  selectedMonthResult = { month: 0, travelledDistance: 0, year: 0, totalFuel: 0, previousAvg: '', totalPrice: 0.0, PricePerLitre: 0 }
-  selectedInput = { month: { name: 'May', value: 4 }, year: { name: new Date().getUTCFullYear(), value: new Date().getUTCFullYear() } }
+  selectedMonthResult = { month: 0, travelledDistance: 0, year: 0, totalFuel: 0, previousAvg: '', totalPrice: 0.0, PricePerLitre: 0 };
   months = [
     { name: 'Jan', value: 0 },
     { name: 'Feb', value: 1 },
@@ -26,7 +25,12 @@ export class FuelHomeComponent implements OnInit {
     { name: 'Oct', value: 9 },
     { name: 'Nov', value: 10 },
     { name: 'Dec', value: 11 }
-  ]
+  ];
+
+  now = new Date();
+  thisMonth = this.months[this.now.getMonth()];
+  selectedInput = { month: { name: this.thisMonth, value: this.now.getMonth() }, year: { name: new Date().getUTCFullYear(), value: new Date().getUTCFullYear() } };
+
   years = [];
   fuelHomeForm: FormGroup = new FormGroup({
     Month: new FormControl(this.selectedInput.month.value),
