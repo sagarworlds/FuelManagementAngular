@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
 import { FuelListComponent } from './fuel/fuel-list/fuel-list.component';
 import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
+import { OrderByPipe } from './pipe/OrderByPipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
     LoginComponent,
     FuelAddComponent,
     FuelListComponent,
-    FuelHomeComponent
+    FuelHomeComponent,
+    OrderByPipe
   ],
   imports: [
     BrowserModule,

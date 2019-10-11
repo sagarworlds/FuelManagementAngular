@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  APIBaseURL: 'http://fuelapi.somee.com/api'
+  APIBaseURL: 'http://localhost/API/api'
+  //APIBaseURL: 'http://fuelapi.somee.com/api'
 };
 
 /*

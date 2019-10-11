@@ -1,30 +1,42 @@
-  <div class="row">
-    <!-- <div class="col-md-6">
+<div class="row">
+  <!-- <div class="col-md-6">
     <h1>{{selectedMonthResult.month}} {{this.selectedMonthResult.year}}</h1>
   </div> -->
-    <div class="col-md-6">
-      <form [formGroup]="fuelHomeForm">
-        <div class="form-group row">
-          <div class="col-xs-2">
-            <select (change)="monthChange($event.target.value)" class="form-control" formControlName="Month">
-              <option *ngFor="let month of months" [value]="month.value">{{month.name}} </option>
-            </select>
-          </div>
-          <div class="col-xs-2">
-
-            <select (change)="yearChange($event.target.value)" class="form-control" formControlName="Year">
-              <option *ngFor="let year of years" [value]="year.value">{{year.name}} </option>
-            </select>
-          </div>
+  <div class="col-md-6">
+    <form [formGroup]="fuelHomeForm">
+      <div class="form-group row">
+        <div class="col-xs-2">
+          <select (change)="monthChange($event.target.value)" class="form-control" formControlName="Month">
+            <option *ngFor="let month of months" [value]="month.value">{{month.name}} </option>
+          </select>
         </div>
+        <div class="col-xs-2">
 
-      </form>
-    </div>
+          <select (change)="yearChange($event.target.value)" class="form-control" formControlName="Year">
+            <option *ngFor="let year of years" [value]="year.value">{{year.name}} </option>
+          </select>
+        </div>
+      </div>
+
+    </form>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-3">
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="circle"> {{selectedMonthResult.totalPrice| currency: 'INR':true}}</div>
+      </div>
+      <div class="col-md-3">
+        <div class="circle"> {{selectedMonthResult.totalFuel}}ltr</div>
+      </div>
+      <div class="col-md-3">
+        <div class="circle"> {{selectedMonthResult.previousAvg||0}}</div>
+      </div>
+      <div class="col-md-3">
+        <div class="circle"> {{selectedMonthResult.travelledDistance}}km</div>
+      </div>
+      <!-- <div class="col-md-3">
           <h5>Expense</h5>
           {{selectedMonthResult.totalPrice| currency: 'INR':true}}
         </div>
@@ -39,7 +51,7 @@
         <div class="col-md-3">
           <h5>Distance</h5>
           {{selectedMonthResult.travelledDistance}}
-        </div>
-      </div>
+        </div> -->
     </div>
   </div>
+</div>

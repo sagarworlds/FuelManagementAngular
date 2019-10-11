@@ -13,9 +13,10 @@ export class FuelAddComponent implements OnInit {
   fuelAddForm = new FormGroup({
     AddedFuel: new FormControl('', Validators.required),
     MeterReading: new FormControl('', Validators.required),
-    TotalPrice: new FormControl('', Validators.required),
+    TotalPrice: new FormControl('', Validators.required),    
     UserId: new FormControl(1),
-    Note: new FormControl()
+    Note: new FormControl(),
+    CreatedAt:new FormControl()
   });
   newFuelDetail: FuelDetail;
 
