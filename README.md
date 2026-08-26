@@ -1,4 +1,4 @@
-# FuelManagementAngular
+# Fuel Management — Frontend (Angular)
 
 <!-- Badges -->
 
@@ -14,22 +14,27 @@
 [![Protractor](https://img.shields.io/badge/Protractor-e2e-blue?logo=protractor&logoColor=white)](http://www.protractortest.org/)
 
 
-A front-end application for Fuel Management built with Angular 7.
+A polished frontend application for Fuel Management built with Angular 7.
+
+Recommended repository name: `fuel-management-frontend`
 
 ## Table of contents
 
 - About
+- Demo / Screenshots (optional)
 - Technologies
 - Prerequisites
 - Getting started
 - Scripts
 - Project structure
+- Tests
 - Contributing
+- Renaming this repository
 
 
 ## About
 
-This project was generated with the Angular CLI (v7.3.8) and provides the front-end for a Fuel Management system. It includes components, routing, and basic styling using Bootstrap.
+This project was generated with the Angular CLI (v7.3.8) and provides the frontend for a Fuel Management system. It includes components, routing, and styling using Bootstrap.
 
 
 ## Technologies
@@ -60,10 +65,10 @@ Developer / testing tools included as devDependencies:
 
 ## Getting started
 
-1. Clone the repository:
+1. Clone the repository (after renaming, use the new repo name):
 
-   git clone https://github.com/sagarworlds/FuelManagementAngular.git
-   cd FuelManagementAngular
+   git clone https://github.com/sagarworlds/fuel-management-frontend.git
+   cd fuel-management-frontend
 
 2. Install dependencies:
 
@@ -102,14 +107,49 @@ The repository exposes the usual Angular CLI scripts via npm:
 
 ## Contributing
 
-Contributions are welcome. If you'd like to contribute:
+Contributions are welcome. To contribute:
 
 1. Fork the repo
 2. Create a feature branch
 3. Commit your changes
 4. Open a Pull Request describing your change
 
+Include clear commit messages and a description of the problem your change solves.
+
+
+## Renaming this repository
+
+I cannot rename the GitHub repository directly from this assistant, but I've updated this README to use the recommended professional name `fuel-management-frontend`.
+
+To rename the repository yourself on GitHub (web UI):
+
+1. Go to the repository on GitHub: https://github.com/sagarworlds/FuelManagementAngular
+2. Click Settings → Repository name
+3. Enter the new name `fuel-management-frontend` and click Rename
+
+After renaming, update your local clone's remote URL:
+
+   git remote set-url origin https://github.com/sagarworlds/fuel-management-frontend.git
+
+Or rename via the GitHub CLI:
+
+   gh repo rename sagarworlds/FuelManagementAngular --name fuel-management-frontend
+
+Or use the REST API (authenticated PATCH):
+
+   curl -X PATCH -H "Authorization: token <YOUR_TOKEN>" \
+     -H "Accept: application/vnd.github.v3+json" \
+     https://api.github.com/repos/sagarworlds/FuelManagementAngular \
+     -d '{"name":"fuel-management-frontend"}'
+
 
 ---
 
-If you'd like any other sections added (screenshots, usage examples, or a CONTRIBUTING.md), tell me which and I will add them.
+If you'd like a different repository name, tell me which one (or pick from these suggestions) and I will update the README accordingly:
+
+- `fuel-management-frontend` (recommended)
+- `fuel-management-ui`
+- `fuelops-frontend`
+- `fuel-management-dashboard`
+
+If you want, I can also create a GitHub Issue suggesting the rename or update other files (package.json, app metadata) to match the new name — tell me which you'd like next.
