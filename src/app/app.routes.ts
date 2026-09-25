@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { ChangePasswordComponent } from './account/change-password/change-password.component';
 import { authGuard } from './auth/auth.guard';
 import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
 import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
@@ -37,6 +38,11 @@ export const routes: Routes = [
   {
     path: 'list',
     component: FuelListComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'account/password',
+    component: ChangePasswordComponent,
     canActivate: [authGuard]
   }
 ];

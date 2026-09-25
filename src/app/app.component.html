@@ -17,7 +17,8 @@
                     <a class="nav-link" routerLink="/list">List</a>
                 </li>
             </ul>
-            <span class="navbar-text mr-3">{{session.email}}</span>
+            <span class="navbar-text mr-2">{{session.email}}</span>
+            <a class="btn btn-link btn-sm mr-2" routerLink="/account/password" routerLinkActive="active">Change password</a>
             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">Log out</button>
         } @else {
             <ul class="navbar-nav ml-auto">
