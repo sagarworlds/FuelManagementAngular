@@ -42,10 +42,10 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('.navbar-brand')?.textContent).toContain('Fuel Management');
   });
 
-  it('should offer only "Log in" when signed out', () => {
+  it('should offer "Log in" and "Register" when signed out', () => {
     const compiled = render().nativeElement as HTMLElement;
 
-    expect(Array.from(compiled.querySelectorAll('.nav-link')).map(link => link.textContent?.trim())).toEqual(['Log in']);
+    expect(Array.from(compiled.querySelectorAll('.nav-link')).map(link => link.textContent?.trim())).toEqual(['Log in', 'Register']);
   });
 
   it('should show the pages, the user and "Log out" when signed in, and sign out on click', () => {
@@ -60,6 +60,6 @@ describe('AppComponent', () => {
 
     expect(logout).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(['/login']);
-    expect(Array.from(compiled.querySelectorAll('.nav-link')).map(link => link.textContent?.trim())).toEqual(['Log in']);
+    expect(Array.from(compiled.querySelectorAll('.nav-link')).map(link => link.textContent?.trim())).toEqual(['Log in', 'Register']);
   });
 });
