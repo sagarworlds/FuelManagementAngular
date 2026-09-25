@@ -1,26 +1,18 @@
-/*interface IFuelDetail {
+/**
+ * A fuel log entry as returned by the Web API.
+ * Property names are PascalCase because the API serialises its C# model as-is.
+ */
+export interface FuelDetail {
   Id: number;
   UserId: number;
   MeterReading: number;
   TotalPrice: number;
   AddedFuel: number;
-  Note: string;
-  CreatedAt: Date;
-  ModifiedAt: Date;
-}*/
-export class FuelDetail {
-  public constructor(init?: FuelDetail) {
-    Object.assign(this, init);
-  }
-  public Id: number;
-  public UserId: number;
-  public MeterReading: number;
-  public TotalPrice: number;
-  public AddedFuel: number;
-  public Note: string;
-  public CreatedAt: Date;
-  public ModifiedAt: Date;
-  // public constructor(init?: Partial<IFuelDetail>) {
-  //   Object.assign(this, init);
-  // }
+  Note: string | null;
+  /** ISO-8601 date text; the API sends dates as strings, not `Date` objects. */
+  CreatedAt: string;
+  ModifiedAt: string;
 }
+
+/** Payload for creating an entry; the API assigns `Id` and `ModifiedAt`, and takes `UserId` from the login token. */
+export type NewFuelDetail = Omit<FuelDetail, 'Id' | 'UserId' | 'ModifiedAt'>;

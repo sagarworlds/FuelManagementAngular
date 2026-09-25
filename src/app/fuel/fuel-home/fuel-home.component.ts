@@ -1,16 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import { describeHttpError } from '../../shared/http-error-message';
 import { FuelDetail } from '../_model/fuel-detail-model';
 import { FuelService } from '../_service/fuel.service';
-import { FormGroup, FormControl } from '@angular/forms';
 
+/**
+ * Dashboard with the selected month's spend, fuel, mileage and distance.
+ */
 @Component({
   selector: 'app-fuel-home',
+  imports: [CurrencyPipe, ReactiveFormsModule],
   templateUrl: './fuel-home.component.html',
   styleUrls: ['./fuel-home.component.css']
 })
 export class FuelHomeComponent implements OnInit {
+  private readonly fuelService = inject(FuelService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
-  fuelList: FuelDetail[];
+  fuelList: FuelDetail[] = [];
+  loadError: string | null = null;
   selectedMonthResult = { month: 0, travelledDistance: 0, year: 0, totalFuel: 0, previousAvg: '', totalPrice: 0.0, PricePerLitre: 0 };
   months = [
     { name: 'Jan', value: 0 },
@@ -29,15 +39,14 @@ export class FuelHomeComponent implements OnInit {
 
   now = new Date();
   thisMonth = this.months[this.now.getMonth()];
-  selectedInput = { month: { name: this.thisMonth, value: this.now.getMonth() }, year: { name: new Date().getUTCFullYear(), value: new Date().getUTCFullYear() } };
+  // Local-time year, matching the local-time month here and in setFilterData().
+  selectedInput = { month: { name: this.thisMonth, value: this.now.getMonth() }, year: { name: this.now.getFullYear(), value: this.now.getFullYear() } };
 
-  years = [];
+  years: { name: number; value: number }[] = [];
   fuelHomeForm: FormGroup = new FormGroup({
     Month: new FormControl(this.selectedInput.month.value),
     Year: new FormControl(this.selectedInput.year.value)
   });
-
-  constructor(private fuelService: FuelService) { }
 
   ngOnInit() {
     this.selectedMonthResult.month = this.selectedInput.month.value;
@@ -47,14 +56,28 @@ export class FuelHomeComponent implements OnInit {
   }
 
 
+  /** Loads the signed-in user's entries and recalculates the summary. */
   getList() {
-    this.fuelService.GetByUserId(1).subscribe(res => {
-      this.fuelList = res;
+    this.loadError = null;
+    this.fuelService.getList().subscribe({
+      next: res => {
+        this.fuelList = res;
 
-      this.setFilterData();
-    })
+        this.setFilterData();
+        // OnPush (Angular's default) doesn't re-render after async callbacks on its own.
+        this.changeDetector.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.loadError = describeHttpError(error, 'Couldn\'t load your fuel entries. Please try again.');
+        if (this.loadError) {
+          console.error('Loading fuel entries failed.', error);
+        }
+        this.changeDetector.markForCheck();
+      }
+    });
   }
 
+  /** Recalculates the summary figures for the selected month and year. */
   setFilterData() {
     this.selectedMonthResult.travelledDistance = 0;
     this.selectedMonthResult.previousAvg = '';
@@ -63,7 +86,7 @@ export class FuelHomeComponent implements OnInit {
     if (this.fuelList.length) {
       this.fuelList.sort((a, b) => new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime())
 
-      let results = this.fuelList.filter(x =>
+      const results = this.fuelList.filter(x =>
         new Date(x.CreatedAt).getMonth() == this.selectedInput.month.value
         && new Date(x.CreatedAt).getFullYear() == this.selectedInput.year.value
       );
@@ -74,30 +97,35 @@ export class FuelHomeComponent implements OnInit {
           this.selectedMonthResult.totalPrice += fuel.TotalPrice;
           this.selectedMonthResult.totalFuel += fuel.AddedFuel;
         }
-        let index = this.fuelList.indexOf(results[0]);
-        let prevRecord = this.fuelList[index + 1];
+        const index = this.fuelList.indexOf(results[0]);
+        const prevRecord: FuelDetail | undefined = this.fuelList[index + 1];
 
-        this.selectedMonthResult.travelledDistance = results[0].MeterReading - prevRecord.MeterReading;
-        // tslint:disable-next-line: max-line-length
-        this.selectedMonthResult.previousAvg = (this.selectedMonthResult.travelledDistance / prevRecord.AddedFuel).toFixed(2);
+        // The oldest entry has no earlier fill-up to measure from, so distance and mileage stay 0.
+        if (prevRecord) {
+          this.selectedMonthResult.travelledDistance = results[0].MeterReading - prevRecord.MeterReading;
+          this.selectedMonthResult.previousAvg = (this.selectedMonthResult.travelledDistance / prevRecord.AddedFuel).toFixed(2);
+        }
       }
     }
 
   }
 
+  /** Fills the year dropdown with the current year and the nine before it. */
   getYears() {
-    let currentYear = new Date().getUTCFullYear();
+    const currentYear = new Date().getFullYear();
     for (let index = 0; index < 10; index++) {
       this.years.push({ name: currentYear - index, value: currentYear - index });
     }
   }
 
+  /** Handles a month selection; `newValue` is the selected option's value (0-11). */
   monthChange(newValue: string) {
     console.log(newValue)
     this.selectedInput.month.value = parseInt(newValue);
     //this.selectedMonthResult.month = parseInt(newValue);
     this.setFilterData();
   }
+  /** Handles a year selection; `newValue` is the selected four-digit year. */
   yearChange(newValue: string) {
     console.log(newValue)
     this.selectedInput.year.value = parseInt(newValue);

@@ -2,19 +2,18 @@
 
 <!-- Badges -->
 
-[![Angular](https://img.shields.io/badge/Angular-7.2.0-DD0031?logo=angular&logoColor=white)](https://angular.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3.2-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-4.3.1-purple?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![RxJS](https://img.shields.io/badge/RxJS-6.3.3-red?logo=rxjs&logoColor=white)](https://rxjs.dev/)
-[![jQuery](https://img.shields.io/badge/jQuery-3.4.1-lightgrey?logo=jquery&logoColor=blue)](https://jquery.com/)
-[![Popper.js](https://img.shields.io/badge/Popper.js-1.15.0-orange?logo=popper.js&logoColor=white)](https://popper.js.org/)
+[![Angular](https://img.shields.io/badge/Angular-22.2-DD0031?logo=angular&logoColor=white)](https://angular.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-4.6-purple?logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/4.6/)
+[![RxJS](https://img.shields.io/badge/RxJS-7.8-red?logo=rxjs&logoColor=white)](https://rxjs.dev/)
+[![jQuery](https://img.shields.io/badge/jQuery-3.7-lightgrey?logo=jquery&logoColor=blue)](https://jquery.com/)
+[![Popper.js](https://img.shields.io/badge/Popper.js-1.16-orange?logo=popper.js&logoColor=white)](https://popper.js.org/)
 
-[![Karma](https://img.shields.io/badge/Karma-test-orange?logo=karma&logoColor=white)](https://karma-runner.github.io)
-[![Jasmine](https://img.shields.io/badge/Jasmine-specs-green?logo=jasmine&logoColor=white)](https://jasmine.github.io/)
-[![Protractor](https://img.shields.io/badge/Protractor-e2e-blue?logo=protractor&logoColor=white)](http://www.protractortest.org/)
+[![Vitest](https://img.shields.io/badge/Vitest-unit%20tests-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+[![ESLint](https://img.shields.io/badge/ESLint-angular--eslint-4B32C3?logo=eslint&logoColor=white)](https://github.com/angular-eslint/angular-eslint)
 
 
-A polished frontend application for Fuel Management built with Angular 7.
+A polished frontend application for Fuel Management built with Angular 22.
 
 Recommended repository name: `fuel-management-frontend`
 
@@ -34,33 +33,30 @@ Recommended repository name: `fuel-management-frontend`
 
 ## About
 
-This project was generated with the Angular CLI (v7.3.8) and provides the frontend for a Fuel Management system. It includes components, routing, and styling using Bootstrap.
+This project uses the Angular CLI (v22) and provides the frontend for a Fuel Management system. It includes standalone components, routing, and styling using Bootstrap.
 
 
 ## Technologies
 
 This repository uses the following primary technologies (badges above):
 
-- Angular 7 (Angular CLI)
-- TypeScript
+- Angular 22 (Angular CLI, standalone components)
+- TypeScript (strict mode)
 - RxJS
 - Bootstrap 4
-- jQuery
-- Popper.js
+- jQuery and Popper.js (required by Bootstrap 4's JavaScript, e.g. the collapsible navbar)
 
 Developer / testing tools included as devDependencies:
 
-- Karma (unit tests)
-- Jasmine (test framework)
-- Protractor (end-to-end tests)
-- TSLint / Codelyzer
+- Vitest with jsdom (unit tests)
+- ESLint with angular-eslint (linting)
 
 
 ## Prerequisites
 
-- Node.js (v8+ recommended for Angular 7)
+- Node.js `^22.22.3`, `^24.15.0` or `>=26.0.0` (required by Angular CLI 22)
 - npm (comes with Node.js)
-- Angular CLI (optional, but helpful): install globally with `npm i -g @angular/cli@7`
+- Angular CLI (optional, but helpful): install globally with `npm i -g @angular/cli@22`
 
 
 ## Getting started
@@ -80,29 +76,41 @@ Developer / testing tools included as devDependencies:
 
    The app will be served at http://localhost:4200 and will reload on changes.
 
+4. Sign in with an account that exists in the Web API. Every page except the login page requires a signed-in user.
+
+
+## Authentication
+
+The app signs in through the Web API's `POST User/Login`, which returns a JWT. The token is kept in `localStorage` until it expires or you log out.
+
+- `src/app/auth/auth.service.ts` — signs in and out and holds the session.
+- `src/app/auth/auth.interceptor.ts` — adds `Authorization: Bearer <token>` to requests for `environment.APIBaseURL` only. If the API answers 401, it signs out and returns to the login page.
+- `src/app/auth/auth.guard.ts` — sends signed-out users to `/login?returnUrl=…`, and back to that page after sign-in.
+
+The API takes the user from the token, so the app never sends a user id.
+
 
 ## Scripts
 
 The repository exposes the usual Angular CLI scripts via npm:
 
 - `npm start` — runs `ng serve` (development server)
-- `npm run build` — builds the app into the `dist/` folder
-- `npm test` — runs unit tests with Karma + Jasmine
-- `npm run e2e` — runs end-to-end tests with Protractor
-- `npm run lint` — runs TSLint
+- `npm run build` — builds the app (production configuration) into `dist/FuelManagementAngular/browser/`
+- `npm run watch` — rebuilds the development configuration on changes
+- `npm test` — runs unit tests with Vitest (`npm test -- --watch=false` for a single run)
+- `npm run lint` — runs ESLint
 
 
 ## Project structure (high level)
 
-- src/app/ — main Angular application code (components, services, modules)
-- src/assets/ — static assets (images, styles)
-- src/environments/ — environment configs
+- src/app/ — main Angular application code (components, services, pipes, routes and `app.config.ts`)
+- src/environments/ — environment configs (`environment.prod.ts` replaces `environment.ts` in production builds)
+- public/ — static files copied as-is into the build output (favicon, IIS `web.config`)
 
 
 ## Tests
 
-- Unit tests: `npm test` (Karma + Jasmine)
-- E2E tests: `npm run e2e` (Protractor)
+- Unit tests: `npm test` (Vitest)
 
 
 ## Contributing

@@ -1,3 +1,6 @@
+@if (loadError) {
+  <div class="alert alert-danger" role="alert">{{loadError}}</div>
+}
 <div class="row">
   <table class="table table-striped">
     <thead>
@@ -9,12 +12,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of fuelList | orderby:order:ascending">
-        <td>{{item.TotalPrice}}</td>
-        <td>{{item.AddedFuel}}</td>
-        <td>{{item.MeterReading}}</td>
-        <td>{{item.CreatedAt | date:'medium'}}</td>
-      </tr>
+      @for (item of fuelList | orderby:order:ascending; track item.Id) {
+        <tr>
+          <td>{{item.TotalPrice}}</td>
+          <td>{{item.AddedFuel}}</td>
+          <td>{{item.MeterReading}}</td>
+          <td>{{item.CreatedAt | date:'medium'}}</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>
