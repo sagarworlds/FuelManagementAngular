@@ -1,35 +1,49 @@
 <div class="row">
   <form class="col-md-6" novalidate [formGroup]="fuelAddForm" (ngSubmit)="onSubmit()">
     <h2>Add Fuel Detail</h2>
+    @if (saveError) {
+      <div class="alert alert-danger" role="alert">{{saveError}}</div>
+    }
+    @if (saved) {
+      <div class="alert alert-success" role="status">Entry saved.</div>
+    }
     <div class="form-group">
       <div class="alert alert-danger"
         [hidden]="fuelAddForm.controls.TotalPrice.valid || fuelAddForm.controls.TotalPrice.pristine">
-        Total Price is required
+        Enter a total price greater than 0
       </div>
       <input type="number" class="form-control" name="TotalPrice" formControlName="TotalPrice" placeholder="Total Price"
-        required />
+        aria-label="Total Price" required />
     </div>
     <div class="alert alert-danger"
       [hidden]="fuelAddForm.controls.AddedFuel.valid || fuelAddForm.controls.AddedFuel.pristine">
-      Total Fuel is required
+      Enter the fuel added, greater than 0
     </div>
     <div class="form-group">
       <input type="number" class="form-control" name="AddedFuel" formControlName="AddedFuel" placeholder="Total Fuel"
-        required />
+        aria-label="Total Fuel" required />
+    </div>
+    <div class="alert alert-danger"
+      [hidden]="fuelAddForm.controls.MeterReading.valid || fuelAddForm.controls.MeterReading.pristine">
+      Enter the meter reading as a whole number
     </div>
     <div class="form-group">
       <input type="number" class="form-control" name="meterReading" formControlName="MeterReading"
-        placeholder="Meter Reading" required />
+        placeholder="Meter Reading" aria-label="Meter Reading" required />
+    </div>
+    <div class="alert alert-danger"
+      [hidden]="fuelAddForm.controls.CreatedAt.valid || fuelAddForm.controls.CreatedAt.pristine">
+      Choose the fill-up date
     </div>
     <div class="form-group">
       <input type="date" class="form-control" name="createdAt" formControlName="CreatedAt" placeholder="Date"
-        required />
+        aria-label="Date" [max]="today" required />
     </div>
     <div class="form-group">
-      <textarea class="form-control" name="Note" formControlName="Note" placeholder="Note"></textarea>
+      <textarea class="form-control" name="Note" formControlName="Note" placeholder="Note" aria-label="Note"></textarea>
     </div>
     <div class="form-group">
-      <input type="submit" class="btn btn-primary" value="Add" />
+      <input type="submit" class="btn btn-primary" [value]="saving ? 'Saving…' : 'Add'" [disabled]="saving" />
     </div>
   </form>
 </div>

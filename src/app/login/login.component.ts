@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../auth/auth.service';
+import { describeHttpError } from '../shared/http-error-message';
 
 /**
  * Sign-in form; on success returns the user to the page they were sent here from.
@@ -64,6 +65,7 @@ export class LoginComponent {
       return 'Email or password is incorrect.';
     }
     console.error('Login failed.', error);
-    return 'Could not sign in. Check your connection and try again.';
+    const fallback = 'Could not sign in. Please try again.';
+    return describeHttpError(error, fallback) ?? fallback;
   }
 }

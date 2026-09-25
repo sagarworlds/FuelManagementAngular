@@ -2,6 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+import { describeHttpError } from '../../shared/http-error-message';
 import { FuelDetail } from '../_model/fuel-detail-model';
 import { FuelService } from '../_service/fuel.service';
 
@@ -19,6 +20,7 @@ export class FuelHomeComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
 
   fuelList: FuelDetail[] = [];
+  loadError: string | null = null;
   selectedMonthResult = { month: 0, travelledDistance: 0, year: 0, totalFuel: 0, previousAvg: '', totalPrice: 0.0, PricePerLitre: 0 };
   months = [
     { name: 'Jan', value: 0 },
@@ -37,7 +39,8 @@ export class FuelHomeComponent implements OnInit {
 
   now = new Date();
   thisMonth = this.months[this.now.getMonth()];
-  selectedInput = { month: { name: this.thisMonth, value: this.now.getMonth() }, year: { name: new Date().getUTCFullYear(), value: new Date().getUTCFullYear() } };
+  // Local-time year, matching the local-time month here and in setFilterData().
+  selectedInput = { month: { name: this.thisMonth, value: this.now.getMonth() }, year: { name: this.now.getFullYear(), value: this.now.getFullYear() } };
 
   years: { name: number; value: number }[] = [];
   fuelHomeForm: FormGroup = new FormGroup({
@@ -55,13 +58,23 @@ export class FuelHomeComponent implements OnInit {
 
   /** Loads the signed-in user's entries and recalculates the summary. */
   getList() {
-    this.fuelService.getList().subscribe(res => {
-      this.fuelList = res;
+    this.loadError = null;
+    this.fuelService.getList().subscribe({
+      next: res => {
+        this.fuelList = res;
 
-      this.setFilterData();
-      // OnPush (Angular's default) doesn't re-render after async callbacks on its own.
-      this.changeDetector.markForCheck();
-    })
+        this.setFilterData();
+        // OnPush (Angular's default) doesn't re-render after async callbacks on its own.
+        this.changeDetector.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.loadError = describeHttpError(error, 'Couldn\'t load your fuel entries. Please try again.');
+        if (this.loadError) {
+          console.error('Loading fuel entries failed.', error);
+        }
+        this.changeDetector.markForCheck();
+      }
+    });
   }
 
   /** Recalculates the summary figures for the selected month and year. */
@@ -85,10 +98,13 @@ export class FuelHomeComponent implements OnInit {
           this.selectedMonthResult.totalFuel += fuel.AddedFuel;
         }
         const index = this.fuelList.indexOf(results[0]);
-        const prevRecord = this.fuelList[index + 1];
+        const prevRecord: FuelDetail | undefined = this.fuelList[index + 1];
 
-        this.selectedMonthResult.travelledDistance = results[0].MeterReading - prevRecord.MeterReading;
-        this.selectedMonthResult.previousAvg = (this.selectedMonthResult.travelledDistance / prevRecord.AddedFuel).toFixed(2);
+        // The oldest entry has no earlier fill-up to measure from, so distance and mileage stay 0.
+        if (prevRecord) {
+          this.selectedMonthResult.travelledDistance = results[0].MeterReading - prevRecord.MeterReading;
+          this.selectedMonthResult.previousAvg = (this.selectedMonthResult.travelledDistance / prevRecord.AddedFuel).toFixed(2);
+        }
       }
     }
 
@@ -96,7 +112,7 @@ export class FuelHomeComponent implements OnInit {
 
   /** Fills the year dropdown with the current year and the nine before it. */
   getYears() {
-    const currentYear = new Date().getUTCFullYear();
+    const currentYear = new Date().getFullYear();
     for (let index = 0; index < 10; index++) {
       this.years.push({ name: currentYear - index, value: currentYear - index });
     }

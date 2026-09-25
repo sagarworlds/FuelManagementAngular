@@ -28,11 +28,24 @@ describe('FuelListComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => httpMock.verify());
+  afterEach(() => {
+    httpMock.verify();
+    vi.restoreAllMocks();
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
     httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/Get`).flush([]);
+  });
+
+  it('should explain when the entries can\'t be loaded', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/Get`).flush(null, { status: 0, statusText: 'Unknown Error' });
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement as HTMLElement).querySelector('.alert-danger')?.textContent)
+      .toContain('Can\'t reach the server');
   });
 
   it('should render entries newest Id first', () => {

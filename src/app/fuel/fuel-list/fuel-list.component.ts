@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 import { OrderByPipe } from '../../pipe/OrderByPipe';
+import { describeHttpError } from '../../shared/http-error-message';
 import { FuelDetail } from '../_model/fuel-detail-model';
 import { FuelService } from '../_service/fuel.service';
 
@@ -21,6 +22,7 @@ export class FuelListComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
 
   fuelList: FuelDetail[] = [];
+  loadError: string | null = null;
   order: keyof FuelDetail = 'Id';
   ascending = false;
 
@@ -31,11 +33,20 @@ export class FuelListComponent implements OnInit {
 
   /** Loads all entries from the API. */
   getList() {
-    this.fuelService.getList().subscribe(res => {
-      console.log(res);
-      this.fuelList = res;
-      // OnPush (Angular's default) doesn't re-render after async callbacks on its own.
-      this.changeDetector.markForCheck();
+    this.loadError = null;
+    this.fuelService.getList().subscribe({
+      next: res => {
+        this.fuelList = res;
+        // OnPush (Angular's default) doesn't re-render after async callbacks on its own.
+        this.changeDetector.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.loadError = describeHttpError(error, 'Couldn\'t load your fuel entries. Please try again.');
+        if (this.loadError) {
+          console.error('Loading fuel entries failed.', error);
+        }
+        this.changeDetector.markForCheck();
+      }
     });
   }
 }

@@ -94,7 +94,7 @@ describe('LoginComponent', () => {
 
     submit();
 
-    expect((fixture.nativeElement as HTMLElement).querySelector('.alert')?.textContent).toContain('Could not sign in');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.alert')?.textContent).toContain('Can\'t reach the server');
     expect(component.submitting()).toBe(false);
   });
 });
