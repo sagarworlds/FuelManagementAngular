@@ -1,31 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { FuelService } from '../_service/fuel.service';
-import { FuelDetail } from '../_model/fuel-detail-model';
-import { OrderByPipe } from 'src/app/pipe/OrderByPipe';
+import { DatePipe } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
+import { OrderByPipe } from '../../pipe/OrderByPipe';
+import { FuelDetail } from '../_model/fuel-detail-model';
+import { FuelService } from '../_service/fuel.service';
+
+/**
+ * Table of every stored fuel log entry, newest `Id` first.
+ */
 @Component({
   selector: 'app-fuel-list',
+  imports: [DatePipe, OrderByPipe],
   templateUrl: './fuel-list.component.html',
   styleUrls: ['./fuel-list.component.css']
 
 })
 
 export class FuelListComponent implements OnInit {
-  fuelList: FuelDetail[];
-  order = "Id";
+  private readonly fuelService = inject(FuelService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+
+  fuelList: FuelDetail[] = [];
+  order: keyof FuelDetail = 'Id';
   ascending = false;
-  constructor(private fuelService: FuelService) { }
 
 
   ngOnInit() {
     this.getList();
   }
 
+  /** Loads all entries from the API. */
   getList() {
     this.fuelService.getList().subscribe(res => {
       console.log(res);
       this.fuelList = res;
+      // OnPush (Angular's default) doesn't re-render after async callbacks on its own.
+      this.changeDetector.markForCheck();
     });
   }
 }
-

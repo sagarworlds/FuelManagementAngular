@@ -1,39 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { FuelService } from '../_service/fuel.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FuelDetail } from '../_model/fuel-detail-model';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { NewFuelDetail } from '../_model/fuel-detail-model';
+import { FuelService } from '../_service/fuel.service';
+
+/**
+ * Form for recording a new fuel fill-up.
+ */
 @Component({
   selector: 'app-fuel-add',
+  imports: [ReactiveFormsModule],
   templateUrl: './fuel-add.component.html',
   styleUrls: ['./fuel-add.component.css']
 })
-export class FuelAddComponent implements OnInit {
+export class FuelAddComponent {
+  private readonly fuelService = inject(FuelService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
   fuelAddForm = new FormGroup({
-    AddedFuel: new FormControl('', Validators.required),
-    MeterReading: new FormControl('', Validators.required),
-    TotalPrice: new FormControl('', Validators.required),    
-    UserId: new FormControl(1),
-    Note: new FormControl(),
-    CreatedAt:new FormControl()
+    AddedFuel: new FormControl<number | null>(null, Validators.required),
+    MeterReading: new FormControl<number | null>(null, Validators.required),
+    TotalPrice: new FormControl<number | null>(null, Validators.required),
+    // nonNullable so reset() after a save restores user 1; otherwise it becomes null,
+    // which the API's non-nullable integer UserId cannot hold.
+    UserId: new FormControl(1, { nonNullable: true }),
+    Note: new FormControl<string | null>(null),
+    CreatedAt: new FormControl<string | null>(null)
   });
-  newFuelDetail: FuelDetail;
 
-  constructor(private fuelService: FuelService) { }
-
-
-  ngOnInit() {
-
-  }
-
+  /** Saves the entry when the form is valid, then clears the form. */
   onSubmit() {
     if (this.fuelAddForm.valid) {
-      this.newFuelDetail = new FuelDetail(this.fuelAddForm.value);
-      console.log(this.newFuelDetail);
-      this.fuelService.save(this.newFuelDetail).subscribe(res => {
+      // The required validators guarantee the non-null fields are set once the form is valid.
+      const newFuelDetail = this.fuelAddForm.getRawValue() as NewFuelDetail;
+      console.log(newFuelDetail);
+      this.fuelService.save(newFuelDetail).subscribe(res => {
         console.log(res);
         this.fuelAddForm.reset();
+        // OnPush (Angular's default) doesn't re-render after async callbacks on its own.
+        this.changeDetector.markForCheck();
       });
     }
   }

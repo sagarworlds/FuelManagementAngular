@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
-import { FuelListComponent } from './fuel/fuel-list/fuel-list.component';
-import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
+import { Routes } from '@angular/router';
 
-const routes: Routes = [
+import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
+import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
+import { FuelListComponent } from './fuel/fuel-list/fuel-list.component';
+import { LoginComponent } from './login/login.component';
+
+/** Top-level routes of the application. */
+export const routes: Routes = [
   {
     path: '',
     component: FuelHomeComponent,
@@ -31,16 +32,5 @@ const routes: Routes = [
   {
     path: 'list',
     component: FuelListComponent
-  },
+  }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
-
-
-
-
-

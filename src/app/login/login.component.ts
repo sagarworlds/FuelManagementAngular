@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
+/**
+ * Placeholder for the login page; not implemented yet.
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class LoginComponent {
 }

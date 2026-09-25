@@ -1,40 +1,62 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Sorts an array by one of its items' properties.
+ * Values are compared as numbers when both are numeric, otherwise as case-insensitive text.
+ */
 @Pipe({ name: 'orderby' })
 export class OrderByPipe implements PipeTransform {
-  transform(array, orderBy, asc = true) {
-
-    if (!orderBy || orderBy.trim() == "") {
+  /**
+   * @param array Items to sort; the input array is not mutated.
+   * @param orderBy Property to sort by; an empty key returns the input unchanged.
+   * @param asc Sort ascending when true (default), descending otherwise.
+   * @returns A sorted copy of `array`, or `array` itself when `orderBy` is empty.
+   */
+  transform<T>(array: T[], orderBy: keyof T | '', asc = true): T[] {
+    if (!orderBy || String(orderBy).trim() === '') {
       return array;
     }
+    const key = orderBy;
     //ascending
     if (asc) {
-      return Array.from(array).sort((item1: any, item2: any) => {
-        return this.orderByComparator(item1[orderBy], item2[orderBy]);
+      return Array.from(array).sort((item1, item2) => {
+        return this.orderByComparator(item1[key], item2[key]);
       });
     }
     else {
       //not asc
-      return Array.from(array).sort((item1: any, item2: any) => {
-        return this.orderByComparator(item2[orderBy], item1[orderBy]);
+      return Array.from(array).sort((item1, item2) => {
+        return this.orderByComparator(item2[key], item1[key]);
       });
     }
 
   }
 
-  orderByComparator(a: any, b: any): number {
+  /**
+   * Compares two property values for sorting.
+   * @returns A negative number, zero or a positive number, as `Array.prototype.sort` expects.
+   */
+  orderByComparator(a: unknown, b: unknown): number {
 
-    if ((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))) {
+    if (!this.isNumeric(a) || !this.isNumeric(b)) {
       //Isn't a number so lowercase the string to properly compare
-      if (a.toLowerCase() < b.toLowerCase()) return -1;
-      if (a.toLowerCase() > b.toLowerCase()) return 1;
+      const textA = String(a).toLowerCase();
+      const textB = String(b).toLowerCase();
+      if (textA < textB) return -1;
+      if (textA > textB) return 1;
     }
     else {
       //Parse strings as numbers to compare properly
-      if (parseFloat(a) < parseFloat(b)) return -1;
-      if (parseFloat(a) > parseFloat(b)) return 1;
+      const numA = parseFloat(String(a));
+      const numB = parseFloat(String(b));
+      if (numA < numB) return -1;
+      if (numA > numB) return 1;
     }
 
     return 0; //equal each other
+  }
+
+  private isNumeric(value: unknown): boolean {
+    return !isNaN(parseFloat(String(value))) && isFinite(Number(value));
   }
 }
