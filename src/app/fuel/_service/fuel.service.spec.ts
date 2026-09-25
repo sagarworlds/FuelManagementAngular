@@ -27,7 +27,7 @@ describe('FuelService', () => {
 
   it('should POST a new entry to FuelDetail/Save', () => {
     const entry: NewFuelDetail = {
-      UserId: 1, MeterReading: 1000, TotalPrice: 500, AddedFuel: 5, Note: null, CreatedAt: '2026-01-15'
+      MeterReading: 1000, TotalPrice: 500, AddedFuel: 5, Note: null, CreatedAt: '2026-01-15'
     };
 
     service.save(entry).subscribe();
@@ -35,21 +35,13 @@ describe('FuelService', () => {
     const req = httpMock.expectOne(`${baseUrl}/FuelDetail/Save`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(entry);
-    req.flush({ ...entry, Id: 1, ModifiedAt: entry.CreatedAt });
+    req.flush({ ...entry, Id: 1, UserId: 1, ModifiedAt: entry.CreatedAt });
   });
 
-  it('should GET all entries from FuelDetail/Get', () => {
+  it('should GET the signed-in user\'s entries from FuelDetail/Get', () => {
     service.getList().subscribe();
 
     const req = httpMock.expectOne(`${baseUrl}/FuelDetail/Get`);
-    expect(req.request.method).toBe('GET');
-    req.flush([]);
-  });
-
-  it('should GET one user\'s entries from FuelDetail/GetByUserId', () => {
-    service.GetByUserId(7).subscribe();
-
-    const req = httpMock.expectOne(`${baseUrl}/FuelDetail/GetByUserId?UserId=7`);
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });

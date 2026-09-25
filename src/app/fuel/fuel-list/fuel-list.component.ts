@@ -6,7 +6,7 @@ import { FuelDetail } from '../_model/fuel-detail-model';
 import { FuelService } from '../_service/fuel.service';
 
 /**
- * Table of every stored fuel log entry, newest `Id` first.
+ * Table of the signed-in user's fuel log entries, newest `Id` first.
  */
 @Component({
   selector: 'app-fuel-list',

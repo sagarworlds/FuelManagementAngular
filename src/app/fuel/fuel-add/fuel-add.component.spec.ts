@@ -34,18 +34,17 @@ describe('FuelAddComponent', () => {
     httpMock.expectNone(`${environment.APIBaseURL}/FuelDetail/Save`);
   });
 
-  it('should save the entry and keep UserId 1 after the form resets', () => {
+  it('should save the entry without a UserId (the API takes it from the token) and clear the form', () => {
     component.fuelAddForm.setValue({
-      AddedFuel: 5, MeterReading: 1000, TotalPrice: 500, UserId: 1, Note: null, CreatedAt: '2026-01-15'
+      AddedFuel: 5, MeterReading: 1000, TotalPrice: 500, Note: null, CreatedAt: '2026-01-15'
     });
     fixture.detectChanges();
 
     component.onSubmit();
 
     const req = httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/Save`);
-    expect(req.request.body.UserId).toBe(1);
+    expect(req.request.body).toEqual({ AddedFuel: 5, MeterReading: 1000, TotalPrice: 500, Note: null, CreatedAt: '2026-01-15' });
     req.flush({});
-    expect(component.fuelAddForm.controls.UserId.value).toBe(1);
     expect(component.fuelAddForm.controls.TotalPrice.value).toBeNull();
   });
 });

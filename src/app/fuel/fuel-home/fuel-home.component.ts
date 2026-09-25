@@ -53,9 +53,9 @@ export class FuelHomeComponent implements OnInit {
   }
 
 
-  /** Loads user 1's entries and recalculates the summary. */
+  /** Loads the signed-in user's entries and recalculates the summary. */
   getList() {
-    this.fuelService.GetByUserId(1).subscribe(res => {
+    this.fuelService.getList().subscribe(res => {
       this.fuelList = res;
 
       this.setFilterData();

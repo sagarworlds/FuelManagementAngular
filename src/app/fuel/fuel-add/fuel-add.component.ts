@@ -21,9 +21,6 @@ export class FuelAddComponent {
     AddedFuel: new FormControl<number | null>(null, Validators.required),
     MeterReading: new FormControl<number | null>(null, Validators.required),
     TotalPrice: new FormControl<number | null>(null, Validators.required),
-    // nonNullable so reset() after a save restores user 1; otherwise it becomes null,
-    // which the API's non-nullable integer UserId cannot hold.
-    UserId: new FormControl(1, { nonNullable: true }),
     Note: new FormControl<string | null>(null),
     CreatedAt: new FormControl<string | null>(null)
   });

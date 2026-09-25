@@ -1,21 +1,24 @@
 import { Routes } from '@angular/router';
 
+import { authGuard } from './auth/auth.guard';
 import { FuelAddComponent } from './fuel/fuel-add/fuel-add.component';
 import { FuelHomeComponent } from './fuel/fuel-home/fuel-home.component';
 import { FuelListComponent } from './fuel/fuel-list/fuel-list.component';
 import { LoginComponent } from './login/login.component';
 
-/** Top-level routes of the application. */
+/** Top-level routes of the application; everything except login requires a signed-in user. */
 export const routes: Routes = [
   {
     path: '',
     component: FuelHomeComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [authGuard]
   },
   {
     path: 'fms',
     component: FuelHomeComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [authGuard]
   },
   {
     path: 'login',
@@ -23,14 +26,17 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    component: FuelHomeComponent
+    component: FuelHomeComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'add',
-    component: FuelAddComponent
+    component: FuelAddComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'list',
-    component: FuelListComponent
+    component: FuelListComponent,
+    canActivate: [authGuard]
   }
 ];

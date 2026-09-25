@@ -76,6 +76,19 @@ Developer / testing tools included as devDependencies:
 
    The app will be served at http://localhost:4200 and will reload on changes.
 
+4. Sign in with an account that exists in the Web API. Every page except the login page requires a signed-in user.
+
+
+## Authentication
+
+The app signs in through the Web API's `POST User/Login`, which returns a JWT. The token is kept in `localStorage` until it expires or you log out.
+
+- `src/app/auth/auth.service.ts` — signs in and out and holds the session.
+- `src/app/auth/auth.interceptor.ts` — adds `Authorization: Bearer <token>` to requests for `environment.APIBaseURL` only. If the API answers 401, it signs out and returns to the login page.
+- `src/app/auth/auth.guard.ts` — sends signed-out users to `/login?returnUrl=…`, and back to that page after sign-in.
+
+The API takes the user from the token, so the app never sends a user id.
+
 
 ## Scripts
 

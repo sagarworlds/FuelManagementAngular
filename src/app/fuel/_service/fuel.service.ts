@@ -26,8 +26,8 @@ export class FuelService {
   }
 
   /**
-   * Fetches every fuel log entry, for all users.
-   * @returns All stored entries.
+   * Fetches the signed-in user's fuel log entries.
+   * @returns The user's entries.
    */
   getList(): Observable<FuelDetail[]> {
     const apiURL = `${this.APIBaseURL}/FuelDetail/Get`;
@@ -43,15 +43,5 @@ export class FuelService {
   getByMonthYear(oFuelDetail: FuelDetail): Observable<FuelDetail[]> {
     const apiURL = `${this.APIBaseURL}/FuelDetail/getByMonthYear`;
     return this.http.post<FuelDetail[]>(apiURL, oFuelDetail);
-  }
-
-  /**
-   * Fetches the entries recorded by one user.
-   * @param userId The user whose entries to fetch.
-   * @returns That user's entries.
-   */
-  GetByUserId(userId: number): Observable<FuelDetail[]> {
-    const apiURL = `${this.APIBaseURL}/FuelDetail/GetByUserId?UserId=${userId}`;
-    return this.http.get<FuelDetail[]>(apiURL);
   }
 }

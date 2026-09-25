@@ -14,5 +14,5 @@ export interface FuelDetail {
   ModifiedAt: string;
 }
 
-/** Payload for creating an entry; the API assigns `Id` and `ModifiedAt`. */
-export type NewFuelDetail = Omit<FuelDetail, 'Id' | 'ModifiedAt'>;
+/** Payload for creating an entry; the API assigns `Id` and `ModifiedAt`, and takes `UserId` from the login token. */
+export type NewFuelDetail = Omit<FuelDetail, 'Id' | 'UserId' | 'ModifiedAt'>;

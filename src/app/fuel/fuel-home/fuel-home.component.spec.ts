@@ -25,9 +25,9 @@ describe('FuelHomeComponent', () => {
 
   afterEach(() => httpMock.verify());
 
-  it('should create and load user 1\'s entries', () => {
+  it('should create and load the signed-in user\'s entries', () => {
     expect(component).toBeTruthy();
-    httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/GetByUserId?UserId=1`).flush([]);
+    httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/Get`).flush([]);
   });
 
   it('should render the selected month\'s totals once entries load', () => {
@@ -40,7 +40,7 @@ describe('FuelHomeComponent', () => {
         CreatedAt: earlier.toISOString(), ModifiedAt: earlier.toISOString() }
     ];
 
-    httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/GetByUserId?UserId=1`).flush(entries);
+    httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/Get`).flush(entries);
     fixture.detectChanges();
 
     const circles = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.circle'))
@@ -50,7 +50,7 @@ describe('FuelHomeComponent', () => {
   });
 
   it('should list the current year and the nine before it', () => {
-    httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/GetByUserId?UserId=1`).flush([]);
+    httpMock.expectOne(`${environment.APIBaseURL}/FuelDetail/Get`).flush([]);
     const currentYear = new Date().getUTCFullYear();
 
     expect(component.years.length).toBe(10);
