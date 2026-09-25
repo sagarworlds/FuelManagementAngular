@@ -1,20 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { describeHttpError } from '../../shared/http-error-message';
+import { newPasswordValidators, passwordsMatch } from '../../shared/password-validators';
 import { AccountService } from '../account.service';
-
-/** Flags the form when the new password and its confirmation differ. */
-function passwordsMatch(group: AbstractControl): ValidationErrors | null {
-  const { newPassword, confirmPassword } = (group as ChangePasswordForm).getRawValue();
-  return newPassword === confirmPassword ? null : { passwordsDiffer: true };
-}
-
-type ChangePasswordForm = FormGroup<{
-  currentPassword: FormControl<string>;
-  newPassword: FormControl<string>;
-  confirmPassword: FormControl<string>;
-}>;
 
 /**
  * Lets the signed-in user replace their password.
@@ -27,15 +16,11 @@ type ChangePasswordForm = FormGroup<{
 export class ChangePasswordComponent {
   private readonly account = inject(AccountService);
 
-  // Mirrors the API's rule for new passwords (8 to 100 characters).
-  readonly form: ChangePasswordForm = new FormGroup({
+  readonly form = new FormGroup({
     currentPassword: new FormControl('', { nonNullable: true, validators: Validators.required }),
-    newPassword: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(8), Validators.maxLength(100)]
-    }),
+    newPassword: new FormControl('', { nonNullable: true, validators: newPasswordValidators }),
     confirmPassword: new FormControl('', { nonNullable: true, validators: Validators.required })
-  }, { validators: passwordsMatch });
+  }, { validators: passwordsMatch('newPassword', 'confirmPassword') });
   readonly saving = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly changed = signal(false);

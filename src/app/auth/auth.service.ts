@@ -55,17 +55,23 @@ export class AuthService {
    */
   login(email: string, password: string): Observable<void> {
     return this.http.post<LoginResponse>(`${environment.APIBaseURL}/User/Login`, { Email: email, Password: password }).pipe(
-      map(response => {
-        const session: AuthSession = {
-          token: response.Token,
-          expiresAt: Date.parse(response.ExpiresAt),
-          userId: response.UserId,
-          email: response.Email
-        };
-        this.storage.setItem(STORAGE_KEY, JSON.stringify(session));
-        this.currentSession.set(session);
-      })
+      map(response => this.startSession(response))
     );
+  }
+
+  /**
+   * Starts (or replaces) the session from a token the API issued, e.g. at login or after a password change.
+   * @param response The API's login response.
+   */
+  startSession(response: LoginResponse): void {
+    const session: AuthSession = {
+      token: response.Token,
+      expiresAt: Date.parse(response.ExpiresAt),
+      userId: response.UserId,
+      email: response.Email
+    };
+    this.storage.setItem(STORAGE_KEY, JSON.stringify(session));
+    this.currentSession.set(session);
   }
 
   /** Ends the session. */

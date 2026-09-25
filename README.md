@@ -76,7 +76,7 @@ Developer / testing tools included as devDependencies:
 
    The app will be served at http://localhost:4200 and will reload on changes.
 
-4. Sign in with an account that exists in the Web API. Every page except the login page requires a signed-in user.
+4. Create an account on the Register page, or sign in with an existing one. Every page except Log in and Register requires a signed-in user.
 
 
 ## Authentication
@@ -88,6 +88,17 @@ The app signs in through the Web API's `POST User/Login`, which returns a JWT. T
 - `src/app/auth/auth.guard.ts` — sends signed-out users to `/login?returnUrl=…`, and back to that page after sign-in.
 
 The API takes the user from the token, so the app never sends a user id.
+
+- `src/app/account/` — the Register page (creates the account, then signs in) and the Change password page. After a password change, the API rejects every earlier token and returns a new one, which the app switches to; other devices are signed out.
+
+
+## Deploying to IIS
+
+`public/web.config` is copied into the build output. It rewrites app routes such as `/list` to `/index.html`, so refreshing a page or opening a link to it works. It needs the IIS URL Rewrite module.
+
+- The build expects to be served from the site root.
+- To use a sub-folder, build with `--base-href /folder/` and change the rewrite target to `/folder/index.html`.
+- The rules aren't inherited by IIS applications nested under the site, such as the Web API at `/API`.
 
 
 ## Scripts
